@@ -6,6 +6,8 @@ dist/
 __pycache__/
 *.pyc
 *.exe
+!/Pet.exe
+!/PetSettings.exe
 
 # runtime state
 *.pid

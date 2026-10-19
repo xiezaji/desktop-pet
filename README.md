@@ -38,15 +38,34 @@ Pet 是一个运行在 Windows 桌面上的轻量桌宠：透明置顶、点击�
 - 开机自启、界面主题色
 - 本地统计屏幕时长、软件使用排行、按键次数、角色使用时长，支持按天回看
 
-## 运行
+## 下载与运行（免编译）
 
-系统要求：Windows 10/11，.NET Framework 4.8（系统自带）。
+### 系统要求
 
-仓库只包含源码，不包含编译产物。构建后：
+- Windows 10 / 11（x64）
+- .NET Framework 4.8（Windows 10 1903 及以上、Windows 11 默认自带）
 
-1. 将 `Pet.exe`、`PetSettings.exe` 与 `pet-config.txt` 放在同一目录
-2. 双击 `Pet.exe`、`start-pet.cmd` 或 `start-pet.vbs`（无窗口闪烁）启动
-3. 双击 `PetSettings.exe` 或 `run-pet-settings.cmd` 打开设置
+### 三步启动
+
+1. **下载整个仓库**：在 GitHub 页面点击 `Code → Download ZIP`，或执行 `git clone https://github.com/xiezaji/desktop-pet.git`，然后**完整解压**。
+   不要直接压缩包里双击，也不要只把 `Pet.exe` 单独拷出来——程序还需要同目录的 `pet-config.txt`、`chars\` 等资源。
+2. **双击 `start-pet.cmd`**（或 `start-pet.vbs`，无窗口闪烁）启动桌宠；也可以直接双击 `Pet.exe`。
+3. 需要修改设置时，双击 `run-pet-settings.cmd`（或 `PetSettings.exe`）。
+
+> 首次运行 Windows SmartScreen 可能提示「Windows 已保护你的电脑」：程序未做代码签名，点「更多信息 → 仍要运行」即可。
+>
+> 配置中全部使用相对路径，整个文件夹可以放在任意目录、移动到其他电脑或 U 盘，无需重新配置。
+
+### 常见问题
+
+| 现象 | 处理 |
+|---|---|
+| 双击后没反应，或提示找不到 exe | 确认 ZIP 已完整解压，`Pet.exe`、`pet-config.txt`、`chars\` 在同一目录 |
+| SmartScreen 拦截 | 「更多信息 → 仍要运行」 |
+| 桌宠没有出现 | 查看同目录 `pet-crash.log` 与 `pet-status.txt`；确认系统已启用 .NET Framework 4.8 |
+| 重复双击开启了多只 | 不会。程序使用单实例互斥体，已有实例时再次启动会直接退出 |
+| 想换电脑继续用 | 复制整个文件夹即可；`pet-pos.txt`、`pet-stats*.txt` 等运行记录可留可删 |
+| 不想使用预编译 exe | 参考下方「构建」，从源码自行编译 |
 
 ## 操作
 
@@ -73,11 +92,11 @@ dotnet build PetSettings.csproj -c Release
 - `build\pet\Pet.exe`
 - `build\settings\PetSettings.exe`
 
-将两个 exe 复制到项目根目录即可运行。
+将两个 exe 复制到项目根目录即可运行。仓库根目录已附带预编译的 `Pet.exe` 与 `PetSettings.exe`，普通用户无需执行本节步骤。
 
 ## 配置
 
-配置保存在根目录 `pet-config.txt`（key=value）。推荐使用设置面板修改：保存时同步更新 `pet-overrides.txt` 与 `pet-config.txt`，重启桌宠后生效。
+配置保存在根目录 `pet-config.txt`（key=value）。推荐使用设置面板修改：保存时同步更新 `pet-overrides.txt` 与 `pet-config.txt`，重启桌宠后生效。文件内的路径均为相对路径（相对于 `pet-config.txt` 所在目录），整个文件夹可直接移动。
 
 | 键 | 说明 |
 |---|---|
@@ -150,6 +169,7 @@ python anim_custom.py reset --pack "chars/小维" --slot click
 
 ```text
 furina-widget/
+├─ Pet.exe / PetSettings.exe  预编译程序（Windows 10/11 x64）
 ├─ pet.cs / Program.cs        桌宠本体
 ├─ Pet.csproj                 桌宠构建配置
 ├─ Settings.cs                设置中心
@@ -162,7 +182,7 @@ furina-widget/
 ├─ make-pet-config.ps1        生成运行配置
 ├─ start-pet.cmd / .vbs       启动脚本
 ├─ run-pet-settings.cmd       打开设置
-├─ pet-config.txt             运行配置（生成）
+├─ pet-config.txt             运行配置（相对路径）
 ├─ pet-overrides.txt          设置面板覆盖项
 └─ pet.ico / pet.png          图标
 ```

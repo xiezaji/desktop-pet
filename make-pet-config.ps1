@@ -37,6 +37,16 @@ function Pack-Path($dir, $rel) {
   if ([System.IO.Path]::IsPathRooted($rel)) { return $rel }
   return Join-Path $dir $rel
 }
+# 输出相对路径：整个文件夹可以拷到任意机器 / 任意目录
+function Rel-Path($p) {
+  if ([string]::IsNullOrEmpty($p)) { return '' }
+  $full = if ([System.IO.Path]::IsPathRooted($p)) { [System.IO.Path]::GetFullPath($p) } else { [System.IO.Path]::GetFullPath((Join-Path $here $p)) }
+  $root = [System.IO.Path]::GetFullPath($here).TrimEnd('\') + '\'
+  if ($full.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+    return $full.Substring($root.Length)
+  }
+  return $full
+}
 
 $charsRoot = Join-Path $here 'chars'
 $charDirRel = Ov 'charDir' 'chars\芙宁娜'
@@ -64,7 +74,10 @@ if (Test-Path $prevConfig) {
   }
 }
 $voicelines = Pack-Path $charDir $man['voicelines']
-if ((-not $voicelines -or -not (Test-Path $voicelines)) -and $prevVoicelines -and (Test-Path $prevVoicelines)) { $voicelines = $prevVoicelines }
+if ((-not $voicelines -or -not (Test-Path $voicelines)) -and $prevVoicelines) {
+  $pv = if ([System.IO.Path]::IsPathRooted($prevVoicelines)) { $prevVoicelines } else { Join-Path $here $prevVoicelines }
+  if (Test-Path $pv) { $voicelines = $pv }
+}
 
 # 按压 / 松开音：跟随角色；sfxGroup 指定了别的角色就借那个包的
 $sfxGroup = Ov 'sfxGroup' 'auto'
@@ -93,27 +106,28 @@ if ((-not $pressPath -or -not (Test-Path $pressPath)) -and $voicelines -and (Tes
 
 $lines = New-Object System.Collections.Generic.List[string]
 $lines.Add('# Pet 桌宠配置 —— 由 make-pet-config.ps1 生成（值来自 pet-overrides.txt + 角色包）')
+$lines.Add('# 全部是相对路径：整个文件夹可以拷到任意机器 / 任意目录运行')
 $lines.Add("charDir=$charDirRel")
-$lines.Add("frames=$(Pack-Path $charDir $man['frames'])")
-$lines.Add("meta=$(Pack-Path $charDir $man['meta'])")
-$lines.Add("posfile=$(Join-Path $here 'pet-pos.txt')")
-$lines.Add("langfile=$(Join-Path $here 'pet-lang.txt')")
-$lines.Add("statusfile=$(Join-Path $here 'pet-status.txt')")
-$lines.Add("lines=$(Pack-Path $charDir $man['lines'])")
-$lines.Add("voicelines=$voicelines")
+$lines.Add("frames=$(Rel-Path (Pack-Path $charDir $man['frames']))")
+$lines.Add("meta=$(Rel-Path (Pack-Path $charDir $man['meta']))")
+$lines.Add('posfile=pet-pos.txt')
+$lines.Add('langfile=pet-lang.txt')
+$lines.Add('statusfile=pet-status.txt')
+$lines.Add("lines=$(Rel-Path (Pack-Path $charDir $man['lines']))")
+$lines.Add("voicelines=$(Rel-Path $voicelines)")
 $lines.Add('clickLine=' + (Ov 'clickLine' '1'))
-$lines.Add("icopath=$(Join-Path $here 'pet.png')")
+$lines.Add('icopath=pet.png')
 $lines.Add("holdMs=" + (Ov 'holdMs' '110'))
 $lines.Add('clickVoice=' + (Ov 'clickVoice' '0'))
 $lines.Add('bubbleH=' + (Ov 'bubbleH' '118'))
 $lines.Add('bubbleEveryMs=' + (Ov 'bubbleEveryMs' '600000'))
 $lines.Add('bubbleFont=' + (Ov 'bubbleFont' 'YouYuan'))
 $lines.Add('bubbleStyle=' + (Ov 'bubbleStyle' 'card'))
-$lines.Add('bubbleFrame=' + (Ov 'bubbleFrame' ''))
+$lines.Add('bubbleFrame=' + (Rel-Path (Ov 'bubbleFrame' '')))
 $lines.Add('bubbleColor=' + (Ov 'bubbleColor' '8FA6D8'))
 $lines.Add('bubbleFontSize=' + (Ov 'bubbleFontSize' '10.5'))
 $lines.Add('themeColor=' + (Ov 'themeColor' '005FB8'))
-$lines.Add("statsfile=$(Join-Path $here 'pet-stats.txt')")
+$lines.Add('statsfile=pet-stats.txt')
 $lines.Add('statsKeys=' + (Ov 'statsKeys' '1'))
 # 音量与四类动画开关 / 速度（设置面板「语音」「动画」页）
 $lines.Add('volume=' + (Ov 'volume' '100'))
@@ -129,8 +143,8 @@ $lines.Add('speedClick=' + (Ov 'speedClick' '100'))
 $lines.Add('speedDrag=' + (Ov 'speedDrag' '100'))
 # 语音语言：只保留一组（中文）
 $lines.Add("lang0name=$charName")
-$lines.Add("lang0press=$pressPath")
-$lines.Add("lang0release=$relPath")
+$lines.Add("lang0press=$(Rel-Path $pressPath)")
+$lines.Add("lang0release=$(Rel-Path $relPath)")
 $lines.Add('soundSet=' + (Ov 'soundSet' 'furina'))
 $lines.Add('sfxGroup=' + $sfxGroup)
 $lines.Add('clickLineMode=' + (Ov 'clickLineMode' 'random'))
@@ -138,13 +152,16 @@ $lines.Add('clickLineMode=' + (Ov 'clickLineMode' 'random'))
 $lines.Add('bubbleInk=' + (Ov 'bubbleInk' 'auto'))
 
 $out = Join-Path $here 'pet-config.txt'
-$lines | Set-Content -Path $out -Encoding utf8
+[System.IO.File]::WriteAllLines($out, $lines, (New-Object System.Text.UTF8Encoding($false)))
 "已生成 $out（角色 = $charName）"
 "--- 缺文件检查 ---"
 foreach ($l in $lines) {
   $m = [regex]::Match($l, '^([A-Za-z0-9]+)=(.*)$')
   if ($m.Success) {
     $v = $m.Groups[2].Value
-    if ($v -match '\\' -and -not (Test-Path $v)) { "  缺: $($m.Groups[1].Value) -> $v" }
+    if ($v -match '\\' -or $v -match '^[A-Za-z]:') {
+      $vp = if ([System.IO.Path]::IsPathRooted($v)) { $v } else { Join-Path $here $v }
+      if (-not (Test-Path $vp)) { "  缺: $($m.Groups[1].Value) -> $v" }
+    }
   }
 }
