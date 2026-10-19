@@ -1,0 +1,14 @@
+name=奶蛙
+image=图片/image.png
+frames=动画/frames.bin
+meta=动画/frames.txt
+lines=台词.txt
+voicelines=音效/voices.tsv
+press=音效/voices/哈哈哈哈哈.wav
+release=
+charH=219
+ampIdle=1.00
+ampPress=1.00
+ampClick=1.00
+ampDrag=1.00
+voices=1

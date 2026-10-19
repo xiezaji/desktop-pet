@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 桌宠本体：net48 / WinExe，无 NuGet 依赖。
+       编译：dotnet build Pet.csproj -c Release
+       产物：build\pet\Pet.exe（再复制到根目录） -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>Pet</AssemblyName>
+    <RootNamespace>PetApp</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <ApplicationIcon>pet.ico</ApplicationIcon>
+    <OutputPath>build\pet\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="pet.cs" />
+    <Compile Include="Program.cs" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+</Project>

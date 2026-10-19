@@ -1,0 +1,14 @@
+name=小维
+image=图片/image.png
+frames=动画/frames.bin
+meta=动画/frames.txt
+lines=台词.txt
+voicelines=音效/voices.tsv
+press=音效/voices/今天又轮到谁粉身碎骨了呢？.wav
+release=音效/voices/别急别急，人人有份~.wav
+charH=200
+voices=9
+ampIdle=1.00
+ampPress=1.00
+ampClick=2.00
+ampDrag=1.00

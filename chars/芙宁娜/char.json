@@ -1,0 +1,14 @@
+name=芙宁娜
+image=图片/image.png
+frames=动画/frames.bin
+meta=动画/frames.txt
+lines=台词.txt
+voicelines=音效/voices.tsv
+press=音效/press.wav
+release=音效/release.wav
+charH=219
+voices=32
+ampIdle=0.58
+ampPress=1.00
+ampClick=2.00
+ampDrag=1.00

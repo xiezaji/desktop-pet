@@ -1,0 +1,10 @@
+{
+  "w": 213,
+  "h": 216,
+  "idle": 24,
+  "press": 6,
+  "click": 6,
+  "drag": 8,
+  "fps": 30,
+  "frameBytes": 184032
+}

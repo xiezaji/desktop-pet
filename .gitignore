@@ -1,0 +1,33 @@
+# build outputs
+build/
+obj/
+bin/
+dist/
+__pycache__/
+*.pyc
+*.exe
+
+# runtime state
+*.pid
+*.log
+pet-pos.txt
+pet-status.txt
+pet-stats*.txt
+pet-char-time.txt
+pet-settings-selftest.txt
+se_err.txt
+pet-vol-cache/
+screenshots/
+
+# local assistant memory
+.workbuddy/
+
+# backups / archives
+_旧命名备份/
+*.rar
+*.zip
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
