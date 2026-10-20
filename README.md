@@ -1,120 +1,81 @@
-# Pet 桌宠
+<div align="center">
+  <img src="docs/images/icon.png" width="120" alt="Pet 桌宠图标">
+</div>
 
-Pet 是一个运行在 Windows 桌面上的轻量桌宠：透明置顶、点击穿透、可换角色，支持动画、语音、气泡与使用统计。程序使用 Win32 + .NET Framework 4.8 实现，不联网，除系统运行时外无第三方依赖。
+<h1 align="center">Pet 桌宠</h1>
 
-内置「芙宁娜」「小维」「奶蛙」三套角色包，也可自行导入角色。
+<p align="center">
+  把喜欢的角色放到 Windows 桌面上。<br>
+  她会呼吸、会回应，也可以安静地陪你工作。
+</p>
 
-## 功能
+<p align="center">
+  <img alt="Windows 10 / 11" src="https://img.shields.io/badge/Windows-10%20%2F%2011-0078D4?logo=windows&logoColor=white">
+  <img alt=".NET Framework 4.8" src="https://img.shields.io/badge/.NET%20Framework-4.8-512BD4?logo=dotnet&logoColor=white">
+  <img alt="免安装" src="https://img.shields.io/badge/%E5%85%8D%E5%AE%89%E8%A3%85-%E8%A7%A3%E5%8E%8B%E5%8D%B3%E7%94%A8-2ea44f">
+  <img alt="数据仅保存在本地" src="https://img.shields.io/badge/%E6%95%B0%E6%8D%AE-%E4%BB%85%E6%9C%AC%E5%9C%B0-2ea44f">
+</p>
 
-### 桌面表现
+<p align="center">
+  <a href="https://github.com/xiezaji/desktop-pet/archive/refs/heads/main.zip">
+    <img alt="下载 ZIP" src="https://img.shields.io/badge/%E4%B8%8B%E8%BD%BD_ZIP-%E8%A7%A3%E5%8E%8B%E5%8D%B3%E7%94%A8-2ea44f?style=for-the-badge&logo=github&logoColor=white">
+  </a>
+  &nbsp;
+  <a href="#快速开始">
+    <img alt="快速开始" src="https://img.shields.io/badge/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B-3_%E6%AD%A5%E5%90%AF%E5%8A%A8-0078D4?style=for-the-badge">
+  </a>
+</p>
 
-- 透明、置顶窗口，不占任务栏、不抢焦点；透明像素点击穿透，不遮挡桌面操作
-- 待机、按键、点击、拖动四类动画，独立开关，幅度与倍速可调
-- 拖动角色移动位置，松手后记住坐标
+<div align="center">
+  <img src="docs/images/hero.png" alt="Pet 桌宠：透明置顶、四类动画、语音台词、可换角色">
+</div>
 
-### 互动
+Pet 是一个运行在 Windows 桌面上的轻量桌宠：透明置顶、点击穿透、可换角色，支持四类动画、语音台词、气泡外观与本地使用统计。程序使用 Win32 + .NET Framework 4.8 实现，不联网，除系统运行时外无第三方依赖。
 
-- 点击角色：弹出随机台词气泡，并播放与文字对应的语音
-- 键盘输入、鼠标点击、滚轮操作触发静音按压动画
-- 按设定间隔主动冒泡；长文本气泡支持滚轮和拖动滚动
-- 右键角色或托盘图标打开菜单；双击托盘图标打开设置
+仓库内置「芙宁娜」「小维」「奶蛙」三套角色包，附带预编译程序，解压即可运行。
 
-### 语音与气泡
+## 桌面上的样子
 
-- 每个角色独立语音库，台词与音频一一对应
-- 音量 0–100、静音、试听，台词随机或顺序播放
-- 多种气泡样式（圆角卡片、经典椭圆、漫画描边、半透明等），支持自定义外框图片
-- 气泡主色、字体、字号、文字颜色可调
+<div align="center">
+  <img src="docs/images/scene.png" width="820" alt="桌宠与台词气泡显示在桌面上">
+</div>
 
-### 角色扩展
+- **透明、置顶、不抢焦点**：只占据角色自身的像素，透明区域点击穿透，不挡桌面操作，也不占任务栏。
+- **会呼吸，也会回应**：待机时轻轻起伏；按下键盘、点击鼠标时轻轻挤压；点她会小跳一下。
+- **想放哪儿就放哪儿**：按住拖动，松手后记住位置，下次启动还在原地。
+- **安静地挂在托盘**：右键角色或托盘图标打开菜单；双击托盘打开设置。
+- **开机自启**：设置面板一键开启，开机后自动出现在桌面。
 
-- 角色即一个文件夹：立绘、动画帧、语音、台词
-- 设置面板内新建或导入角色，不受内置角色限制
-- 每个角色可单独设置高度；支持用 GIF 或图片替换单类动画
+## 四类动画
 
-### 设置与统计
+<div align="center">
+  <img src="docs/images/pet-anim.gif" width="400" alt="待机、按键、点击、拖动四类动画">
+</div>
 
-- Windows 11 Fluent 风格设置中心：气泡、通用设置、形象与大小、动画、语音、导入、使用统计
-- 开机自启、界面主题色
-- 本地统计屏幕时长、软件使用排行、按键次数、角色使用时长，支持按天回看
+待机、按键、点击、拖拽四类动画独立开关，幅度与倍速都能调。每一类还可以单独换成自己的 GIF 或帧文件夹，不必改程序。
 
-## 下载与运行（免编译）
+## 设置中心
 
-### 系统要求
+Windows 11 Fluent 风格的设置面板，所有选项改完即用。点击图片可查看原始尺寸。
 
-- Windows 10 / 11（x64）
-- .NET Framework 4.8（Windows 10 1903 及以上、Windows 11 默认自带）
-
-### 三步启动
-
-1. **下载整个仓库**：在 GitHub 页面点击 `Code → Download ZIP`，或执行 `git clone https://github.com/xiezaji/desktop-pet.git`，然后**完整解压**。
-   不要直接压缩包里双击，也不要只把 `Pet.exe` 单独拷出来——程序还需要同目录的 `pet-config.txt`、`chars\` 等资源。
-2. **双击 `start-pet.cmd`**（或 `start-pet.vbs`，无窗口闪烁）启动桌宠；也可以直接双击 `Pet.exe`。
-3. 需要修改设置时，双击 `run-pet-settings.cmd`（或 `PetSettings.exe`）。
-
-> 首次运行 Windows SmartScreen 可能提示「Windows 已保护你的电脑」：程序未做代码签名，点「更多信息 → 仍要运行」即可。
->
-> 配置中全部使用相对路径，整个文件夹可以放在任意目录、移动到其他电脑或 U 盘，无需重新配置。
-
-### 常见问题
-
-| 现象 | 处理 |
-|---|---|
-| 双击后没反应，或提示找不到 exe | 确认 ZIP 已完整解压，`Pet.exe`、`pet-config.txt`、`chars\` 在同一目录 |
-| SmartScreen 拦截 | 「更多信息 → 仍要运行」 |
-| 桌宠没有出现 | 查看同目录 `pet-crash.log` 与 `pet-status.txt`；确认系统已启用 .NET Framework 4.8 |
-| 重复双击开启了多只 | 不会。程序使用单实例互斥体，已有实例时再次启动会直接退出 |
-| 想换电脑继续用 | 复制整个文件夹即可；`pet-pos.txt`、`pet-stats*.txt` 等运行记录可留可删 |
-| 不想使用预编译 exe | 参考下方「构建」，从源码自行编译 |
-
-## 操作
-
-| 操作 | 效果 |
-|---|---|
-| 左键点击角色 | 随机台词气泡 + 对应语音 |
-| 按住拖动角色 | 移动位置并记住 |
-| 右键角色 | 打开菜单（设置 / 退出） |
-| 双击托盘图标 | 打开设置 |
-| 右键托盘图标 | 打开菜单（设置 / 退出） |
-| 气泡上滚轮或拖动 | 滚动长文本 |
-
-## 构建
-
-要求：.NET SDK，以及 .NET Framework 4.8 Targeting Pack（由 Visual Studio 或 Developer Pack 提供）。
-
-```bat
-dotnet build Pet.csproj -c Release
-dotnet build PetSettings.csproj -c Release
-```
-
-产物：
-
-- `build\pet\Pet.exe`
-- `build\settings\PetSettings.exe`
-
-将两个 exe 复制到项目根目录即可运行。仓库根目录已附带预编译的 `Pet.exe` 与 `PetSettings.exe`，普通用户无需执行本节步骤。
-
-## 配置
-
-配置保存在根目录 `pet-config.txt`（key=value）。推荐使用设置面板修改：保存时同步更新 `pet-overrides.txt` 与 `pet-config.txt`，重启桌宠后生效。文件内的路径均为相对路径（相对于 `pet-config.txt` 所在目录），整个文件夹可直接移动。
-
-| 键 | 说明 |
-|---|---|
-| `charDir` | 当前角色包目录 |
-| `volume` | 音量 0–100 |
-| `clickLine` / `clickVoice` | 点击台词 / 按压松开音开关 |
-| `bubbleEveryMs` | 主动冒泡间隔，0 为关闭 |
-| `bubbleStyle` / `bubbleColor` / `bubbleFont` / `bubbleFontSize` / `bubbleInk` | 气泡外观 |
-| `animIdle` / `animPress` / `animClick` / `animDrag` | 四类动画开关 |
-| `speedIdle` / `speedPress` / `speedClick` / `speedDrag` | 四类动画倍速（百分比） |
-| `statsKeys` | 是否统计按键次数 |
-| `themeColor` | 设置界面主题色 |
-
-`pet-config.txt` 也可由 `make-pet-config.ps1` 根据 `pet-overrides.txt` 和角色包重新生成。
+| 气泡外观 | 动画调校 |
+| :---: | :---: |
+| <a href="docs/images/settings-bubble.png"><img src="docs/images/settings-bubble.png" width="400" alt="气泡外观设置"></a> | <a href="docs/images/settings-anim.png"><img src="docs/images/settings-anim.png" width="400" alt="动画设置"></a> |
+| 四种内置外框，也可上传自定义 | 四类动画独立开关，幅度与倍速可调 |
+| **语音台词** | **使用统计** |
+| <a href="docs/images/settings-voice.png"><img src="docs/images/settings-voice.png" width="400" alt="语音设置"></a> | <a href="docs/images/settings-stats.png"><img src="docs/images/settings-stats.png" width="400" alt="使用统计"></a> |
+| 台词与语音一一对应，可试听 | 时长、软件、按键与角色陪伴，仅保存在本机 |
 
 ## 角色包
 
-目录结构：
+<div align="center">
+  <img src="docs/images/characters.png" width="900" alt="内置角色：芙宁娜、小维、奶蛙">
+</div>
+
+立绘、动画帧、台词和语音全部随角色文件夹走。在设置面板里即可新建或导入角色，角色之间可以单独设置高度；新增角色不需要修改程序。
+
+<details>
+<summary><b>角色包结构</b></summary>
 
 ```text
 chars/
@@ -145,8 +106,12 @@ press=音效/voices/xxx.wav
 release=音效/voices/yyy.wav
 charH=200
 ```
+</details>
 
-角色管理：
+<details>
+<summary><b>批量制作与自定义动画</b></summary>
+
+需要 Python 3、numpy、Pillow；导入 mp3 / m4a / ogg 时需要 ffmpeg。
 
 ```bat
 python charpack.py list
@@ -154,9 +119,7 @@ python charpack.py new --name 新角色 --image D:\pics\a.png --voices D:\voices
 python charpack.py rebuild --name 新角色 --char-h 260
 ```
 
-依赖 Python 3、numpy、Pillow；导入 mp3/m4a/ogg 时需要 ffmpeg。
-
-自定义单类动画：
+替换某一类动画：
 
 ```bat
 python anim_custom.py apply --pack "chars/小维" --slot click --src D:\anim.gif
@@ -164,17 +127,95 @@ python anim_custom.py reset --pack "chars/小维" --slot click
 ```
 
 `--slot` 可选 `idle` / `press` / `click` / `drag`。
+</details>
 
-## 项目结构
+## 快速开始
+
+### 系统要求
+
+- Windows 10 / 11（x64）
+- .NET Framework 4.8（Windows 10 1903 及以上、Windows 11 默认自带）
+
+### 三步启动
+
+1. **下载整个仓库**：[下载 ZIP](https://github.com/xiezaji/desktop-pet/archive/refs/heads/main.zip)，或执行 `git clone https://github.com/xiezaji/desktop-pet.git`，然后**完整解压**。
+   不要在压缩包里直接双击，也不要只把 `Pet.exe` 单独拷出来——程序还需要同目录的 `pet-config.txt`、`chars\` 等资源。
+2. **双击 `start-pet.cmd`** 启动桌宠（`start-pet.vbs` 启动时无窗口闪烁），也可以直接双击 `Pet.exe`。
+3. **双击 `run-pet-settings.cmd`** 打开设置；托盘图标双击也可以。
+
+> **SmartScreen 提示？** 程序未做代码签名，首次运行可能出现「Windows 已保护你的电脑」。点「更多信息 → 仍要运行」即可。
+>
+> **可以移动吗？** 配置中全部使用相对路径，整个文件夹可以放在任意目录，移动到其他电脑或 U 盘，无需重新配置。
+
+<details>
+<summary><b>常见问题</b></summary>
+
+| 现象 | 处理 |
+|---|---|
+| 双击后没反应，或提示找不到 exe | 确认 ZIP 已完整解压，`Pet.exe`、`pet-config.txt`、`chars\` 在同一目录 |
+| SmartScreen 拦截 | 「更多信息 → 仍要运行」 |
+| 桌宠没有出现 | 查看同目录 `pet-crash.log` 与 `pet-status.txt`；确认系统已启用 .NET Framework 4.8 |
+| 重复双击开启了多只 | 不会。程序使用单实例互斥体，已有实例时再次启动会直接退出 |
+| 想换电脑继续用 | 复制整个文件夹即可；`pet-pos.txt`、`pet-stats*.txt` 等运行记录可留可删 |
+| 不想使用预编译 exe | 参考下方「构建」，从源码自行编译 |
+</details>
+
+## 操作
+
+| 操作 | 效果 |
+|---|---|
+| 左键点击角色 | 随机台词气泡 + 对应语音 |
+| 按住拖动角色 | 移动位置并记住 |
+| 右键角色 | 打开菜单（设置 / 退出） |
+| 双击托盘图标 | 打开设置 |
+| 右键托盘图标 | 打开菜单（设置 / 退出） |
+| 气泡上滚轮或拖动 | 滚动长文本 |
+
+<details>
+<summary><b>构建</b></summary>
+
+要求：.NET SDK，以及 .NET Framework 4.8 Targeting Pack（由 Visual Studio 或 Developer Pack 提供）。
+
+```bat
+dotnet build Pet.csproj -c Release
+dotnet build PetSettings.csproj -c Release
+```
+
+产物为 `build\pet\Pet.exe` 和 `build\settings\PetSettings.exe`。将两个 exe 复制到项目根目录即可运行。仓库根目录已附带预编译版本，普通用户无需执行本节步骤。
+</details>
+
+<details>
+<summary><b>配置</b></summary>
+
+配置保存在根目录 `pet-config.txt`（key=value）。推荐使用设置面板修改：保存时同步更新 `pet-overrides.txt` 与 `pet-config.txt`，重启桌宠后生效。文件内的路径均为相对路径（相对于 `pet-config.txt` 所在目录），整个文件夹可直接移动。
+
+| 键 | 说明 |
+|---|---|
+| `charDir` | 当前角色包目录 |
+| `volume` | 音量 0–100 |
+| `clickLine` / `clickVoice` | 点击台词 / 按压松开音开关 |
+| `bubbleEveryMs` | 主动冒泡间隔，0 为关闭 |
+| `bubbleStyle` / `bubbleColor` / `bubbleFont` / `bubbleFontSize` / `bubbleInk` | 气泡外观 |
+| `animIdle` / `animPress` / `animClick` / `animDrag` | 四类动画开关 |
+| `speedIdle` / `speedPress` / `speedClick` / `speedDrag` | 四类动画倍速（百分比） |
+| `statsKeys` | 是否统计按键次数，设为 `0` 关闭 |
+| `themeColor` | 设置界面主题色 |
+
+`pet-config.txt` 也可由 `make-pet-config.ps1` 根据 `pet-overrides.txt` 和角色包重新生成。
+</details>
+
+<details>
+<summary><b>项目结构</b></summary>
 
 ```text
-furina-widget/
+desktop-pet/
 ├─ Pet.exe / PetSettings.exe  预编译程序（Windows 10/11 x64）
 ├─ pet.cs / Program.cs        桌宠本体
 ├─ Pet.csproj                 桌宠构建配置
 ├─ Settings.cs                设置中心
 ├─ PetSettings.csproj         设置中心构建配置
 ├─ chars/                     角色包
+├─ docs/images/               README 展示图
 ├─ audio/                     音效素材与 audio.json 索引
 ├─ charpack.py                角色包管理
 ├─ sprites.py                 动画帧生成
@@ -186,12 +227,13 @@ furina-widget/
 ├─ pet-overrides.txt          设置面板覆盖项
 └─ pet.ico / pet.png          图标
 ```
+</details>
 
 ## 隐私
 
-- 全局低层钩子只判断输入事件类型（按下、抬起、滚轮），不读取键码或字符内容，不记录、不落盘、不外传。
-- 使用统计仅保存在本地 `pet-stats.txt`，不上传。
-- 程序不联网。
+- 程序不联网，没有账号，也没有云端同步，不会上传任何数据。
+- 全局键鼠钩子用于触发动画；开启按键统计时会读取虚拟键码（例如 A、Ctrl）并累计次数，不记录输入的字符内容。
+- 使用统计仅记录屏幕与活跃时长、前台软件的进程名、按键次数和角色陪伴时长，写入本地 `pet-stats.txt` 及按天归档文件；不记录窗口标题，也不会上传。可在设置中一键清空，按键统计可通过 `statsKeys=0` 关闭。
 
 ## 素材与版权
 
