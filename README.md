@@ -1,12 +1,11 @@
 <div align="center">
-  <img src="docs/images/icon.png" width="120" alt="Pet 桌宠图标">
+  <img src="docs/images/icon.png" width="112" alt="Q Pet">
 </div>
 
-<h1 align="center">Pet 桌宠</h1>
+<h1 align="center">Q Pet</h1>
 
 <p align="center">
-  把喜欢的角色放到 Windows 桌面上。<br>
-  她会呼吸、会回应，也可以安静地陪你工作。
+  将你喜欢的角色放到桌面上。
 </p>
 
 <p align="center">
@@ -17,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/xiezaji/desktop-pet/archive/refs/heads/main.zip">
+  <a href="https://github.com/xiezaji/q-pet/archive/refs/heads/main.zip">
     <img alt="下载 ZIP" src="https://img.shields.io/badge/%E4%B8%8B%E8%BD%BD_ZIP-%E8%A7%A3%E5%8E%8B%E5%8D%B3%E7%94%A8-2ea44f?style=for-the-badge&logo=github&logoColor=white">
   </a>
   &nbsp;
@@ -27,52 +26,49 @@
 </p>
 
 <div align="center">
-  <img src="docs/images/hero.png" alt="Pet 桌宠：透明置顶、四类动画、语音台词、可换角色">
+  <img src="docs/images/hero.png" alt="Q Pet">
 </div>
 
-Pet 是一个运行在 Windows 桌面上的轻量桌宠：透明置顶、点击穿透、可换角色，支持四类动画、语音台词、气泡外观与本地使用统计。程序使用 Win32 + .NET Framework 4.8 实现，不联网，除系统运行时外无第三方依赖。
+Q Pet 是一款 Windows 桌面宠物：透明置顶、点击穿透、四类动画、语音台词、可换角色，数据只保存在本地。程序使用 Win32 + .NET Framework 4.8 编写，不联网，无第三方依赖。
 
-仓库内置「芙宁娜」「小维」「奶蛙」三套角色包，附带预编译程序，解压即可运行。
+内置芙宁娜、阿米娅、小维、奶蛙四套角色包，附带预编译程序，解压即可运行。
 
-## 桌面上的样子
+## 功能
+
+- 透明、置顶、不抢焦点，透明区域点击穿透，不占任务栏。
+- 待机、按键、点击、拖动四类动画，可单独开关、调速。
+- 点击角色随机显示台词并播放语音；按压、松开音效可单独配置。
+- 拖动改变位置，下次启动回到原处。
+- 气泡支持四种外框、颜色、字体、字号，长文本可滚动。
+- 托盘菜单、双击打开设置、开机自启。
+- 角色包就是一个文件夹，新增角色不需要改程序。
+- 本地统计屏幕与活跃时长、软件使用、按键次数和角色陪伴时长。
+
+## 演示
 
 <div align="center">
-  <img src="docs/images/scene.png" width="820" alt="桌宠与台词气泡显示在桌面上">
+  <img src="docs/images/pet-anim.gif" width="400" alt="阿米娅：待机、按键、点击、拖动">
 </div>
-
-- **透明、置顶、不抢焦点**：只占据角色自身的像素，透明区域点击穿透，不挡桌面操作，也不占任务栏。
-- **会呼吸，也会回应**：待机时轻轻起伏；按下键盘、点击鼠标时轻轻挤压；点她会小跳一下。
-- **想放哪儿就放哪儿**：按住拖动，松手后记住位置，下次启动还在原地。
-- **安静地挂在托盘**：右键角色或托盘图标打开菜单；双击托盘打开设置。
-- **开机自启**：设置面板一键开启，开机后自动出现在桌面。
-
-## 四类动画
-
-<div align="center">
-  <img src="docs/images/pet-anim.gif" width="400" alt="待机、按键、点击、拖动四类动画">
-</div>
-
-待机、按键、点击、拖拽四类动画独立开关，幅度与倍速都能调。每一类还可以单独换成自己的 GIF 或帧文件夹，不必改程序。
 
 ## 设置中心
 
-Windows 11 Fluent 风格的设置面板，所有选项改完即用。点击图片可查看原始尺寸。
+Windows 11 Fluent 风格设置面板，修改后即时生效。点击图片查看原始尺寸。
 
 | 气泡外观 | 动画调校 |
 | :---: | :---: |
-| <a href="docs/images/settings-bubble.png"><img src="docs/images/settings-bubble.png" width="400" alt="气泡外观设置"></a> | <a href="docs/images/settings-anim.png"><img src="docs/images/settings-anim.png" width="400" alt="动画设置"></a> |
-| 四种内置外框，也可上传自定义 | 四类动画独立开关，幅度与倍速可调 |
+| <a href="docs/images/settings-bubble.png"><img src="docs/images/settings-bubble.png" width="400" alt="气泡外观设置，选用漫画描边"></a> | <a href="docs/images/settings-anim.png"><img src="docs/images/settings-anim.png" width="400" alt="动画设置"></a> |
+| 四种外框，支持自定义颜色、字体与字号 | 四类动画独立开关，幅度与倍速可调 |
 | **语音台词** | **使用统计** |
 | <a href="docs/images/settings-voice.png"><img src="docs/images/settings-voice.png" width="400" alt="语音设置"></a> | <a href="docs/images/settings-stats.png"><img src="docs/images/settings-stats.png" width="400" alt="使用统计"></a> |
-| 台词与语音一一对应，可试听 | 时长、软件、按键与角色陪伴，仅保存在本机 |
+| 台词与语音一一对应，可试听 | 记录仅保存在本机 |
 
 ## 角色包
 
 <div align="center">
-  <img src="docs/images/characters.png" width="900" alt="内置角色：芙宁娜、小维、奶蛙">
+  <img src="docs/images/characters.png" width="900" alt="内置角色：芙宁娜、阿米娅、小维、奶蛙">
 </div>
 
-立绘、动画帧、台词和语音全部随角色文件夹走。在设置面板里即可新建或导入角色，角色之间可以单独设置高度；新增角色不需要修改程序。
+立绘、动画帧、台词和语音都放在角色文件夹里，角色高度可单独设置。在设置面板中可以新建或导入角色。
 
 <details>
 <summary><b>角色包结构</b></summary>
@@ -138,14 +134,14 @@ python anim_custom.py reset --pack "chars/小维" --slot click
 
 ### 三步启动
 
-1. **下载整个仓库**：[下载 ZIP](https://github.com/xiezaji/desktop-pet/archive/refs/heads/main.zip)，或执行 `git clone https://github.com/xiezaji/desktop-pet.git`，然后**完整解压**。
+1. **下载整个仓库**：[下载 ZIP](https://github.com/xiezaji/q-pet/archive/refs/heads/main.zip)，或执行 `git clone https://github.com/xiezaji/q-pet.git`，然后**完整解压**。
    不要在压缩包里直接双击，也不要只把 `Pet.exe` 单独拷出来——程序还需要同目录的 `pet-config.txt`、`chars\` 等资源。
 2. **双击 `start-pet.cmd`** 启动桌宠（`start-pet.vbs` 启动时无窗口闪烁），也可以直接双击 `Pet.exe`。
-3. **双击 `run-pet-settings.cmd`** 打开设置；托盘图标双击也可以。
+3. **双击 `run-pet-settings.cmd`** 打开设置；双击托盘图标也可以。
 
 > **SmartScreen 提示？** 程序未做代码签名，首次运行可能出现「Windows 已保护你的电脑」。点「更多信息 → 仍要运行」即可。
 >
-> **可以移动吗？** 配置中全部使用相对路径，整个文件夹可以放在任意目录，移动到其他电脑或 U 盘，无需重新配置。
+> **可以移动吗？** 配置全部使用相对路径，整个文件夹可以放在任意目录，也可以拷到其他电脑或 U 盘。
 
 <details>
 <summary><b>常见问题</b></summary>
@@ -208,7 +204,7 @@ dotnet build PetSettings.csproj -c Release
 <summary><b>项目结构</b></summary>
 
 ```text
-desktop-pet/
+q-pet/
 ├─ Pet.exe / PetSettings.exe  预编译程序（Windows 10/11 x64）
 ├─ pet.cs / Program.cs        桌宠本体
 ├─ Pet.csproj                 桌宠构建配置

@@ -1,5 +1,5 @@
 // ============================================================================
-// Pet 桌宠（完全独立，不依赖 DSH）
+// Q Pet（完全独立，不依赖 DSH）
 // ============================================================================
 // 原理：Win32 layered window（WS_EX_LAYERED + WS_EX_TOPMOST + WS_EX_TOOLWINDOW）
 //   用 UpdateLayeredWindow 贴**预乘 alpha** 的 32bpp DIB ⇒ 真透明、无边框、不进任务栏。
@@ -708,7 +708,7 @@ namespace PetApp
                 d.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
                 d.uCallbackMessage = (uint)WM_TRAY;
                 d.hIcon = _trayIcon;
-                d.szTip = "Pet 桌宠 · 双击打开设置 · 右键菜单";
+                d.szTip = "Q Pet · 双击打开设置 · 右键菜单";
                 _trayAdded = Shell_NotifyIconW(NIM_ADD, ref d);
                 Status("托盘图标: " + (_trayAdded ? "已添加（双击打开设置）" : "添加失败")
                     + " 图标句柄=" + (_trayIcon != IntPtr.Zero ? "有效" : "无效（将显示空白）"));

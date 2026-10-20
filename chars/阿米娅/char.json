@@ -1,0 +1,14 @@
+name=阿米娅
+image=图片/image.png
+frames=动画/frames.bin
+meta=动画/frames.txt
+lines=台词.txt
+voicelines=音效/voices.tsv
+press=音效/voices/博士，您工作辛苦了。.wav
+release=音效/voices/博士，您还有许多事情需要处理。现在还不能休息哦。.wav
+charH=219
+voices=12
+ampIdle=0.68
+ampPress=0.71
+ampClick=2.00
+ampDrag=2.00

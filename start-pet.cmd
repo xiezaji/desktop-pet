@@ -1,5 +1,5 @@
 @echo off
-rem Pet 桌宠 —— 双击启动（免安装，直接跑 exe）
+rem Q Pet —— 双击启动（免安装，直接跑 exe）
 setlocal
 cd /d "%~dp0"
 if not exist "%~dp0Pet.exe" (

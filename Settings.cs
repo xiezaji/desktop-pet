@@ -1,5 +1,5 @@
 // ============================================================================
-// Pet 桌宠 · 设置（独立 exe，不需要 PowerShell）
+// Q Pet · 设置（独立 exe，不需要 PowerShell）
 // 设计：Windows 11 Fluent —— 左导航 + 设置卡片 + 4px 圆角 + #005FB8 强调色
 // 编译：dotnet build PetSettings.csproj -c Release   （产物 build\settings\PetSettings.exe）
 //       旧方式仍可用：csc /target:winexe /out:PetSettings.exe /r:PresentationFramework.dll
@@ -61,11 +61,11 @@ static class Settings
     static CheckBox ChkAutoStart;
     static Color _themeColor = Color.FromRgb(0x00, 0x5F, 0xB8);        // 界面主题色
     static readonly string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    // 程序命名统一为 Pet（芙宁娜只是可选角色之一）
+    // 显示名统一为 Q Pet；exe 文件名保留 Pet/PetSettings，兼容启动脚本与配置
     public const string PetExeName = "Pet.exe";
     public const string PetSettingsExeName = "PetSettings.exe";
     static readonly string StartupScriptName = "start-pet";   // 与实际脚本 start-pet.vbs / .cmd 一致
-    static readonly string RunValueName = "Pet 桌宠";
+    static readonly string RunValueName = "Pet 桌宠";          // 沿用旧值，避免已有开机自启失效
     static StackPanel VoiceListPanel;
     static TextBlock LblVoiceCount;
     static Button BtnRandomLine;
@@ -209,7 +209,7 @@ static class Settings
         }
         catch (Exception ex)
         {
-            MessageBox.Show("界面加载失败：" + ex.Message, "Pet 桌宠 · 设置");
+            MessageBox.Show("界面加载失败：" + ex.Message, "Q Pet · 设置");
             return;
         }
         try { Bind(); }
@@ -3616,7 +3616,7 @@ static class Settings
     // ---------------- XAML ----------------
     const string XamlText = @"<Window xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
         xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""
-        Title=""Pet 桌宠 · 设置"" Width=""960"" Height=""740"" MinWidth=""780"" MinHeight=""540""
+        Title=""Q Pet · 设置"" Width=""960"" Height=""740"" MinWidth=""780"" MinHeight=""540""
         WindowStartupLocation=""CenterScreen"" Background=""#F3F3F3""
         WindowStyle=""None"" ResizeMode=""CanResize""
         FontFamily=""Microsoft YaHei UI, Segoe UI"" FontSize=""13""
@@ -4061,7 +4061,7 @@ static class Settings
     <Grid Grid.Row=""0"" Background=""#F3F3F3"">
       <StackPanel Orientation=""Horizontal"" VerticalAlignment=""Center"" Margin=""16,0,0,0"">
         <Image x:Name=""imgIcon"" Width=""18"" Height=""18"" Margin=""0,0,8,0"" RenderOptions.BitmapScalingMode=""HighQuality""/>
-        <TextBlock Text=""Pet 桌宠"" FontWeight=""SemiBold"" FontSize=""13"" Foreground=""{StaticResource TextPrimary}""/>
+        <TextBlock Text=""Q Pet"" FontWeight=""SemiBold"" FontSize=""13"" Foreground=""{StaticResource TextPrimary}""/>
         <TextBlock Text=""·  设置"" FontSize=""13"" Foreground=""{StaticResource TextSecondary}"" Margin=""6,0,0,0""/>
       </StackPanel>
       <StackPanel Orientation=""Horizontal"" HorizontalAlignment=""Right"" WindowChrome.IsHitTestVisibleInChrome=""True"">

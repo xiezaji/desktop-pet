@@ -105,7 +105,7 @@ if ((-not $pressPath -or -not (Test-Path $pressPath)) -and $voicelines -and (Tes
 }
 
 $lines = New-Object System.Collections.Generic.List[string]
-$lines.Add('# Pet 桌宠配置 —— 由 make-pet-config.ps1 生成（值来自 pet-overrides.txt + 角色包）')
+$lines.Add('# Q Pet 配置 —— 由 make-pet-config.ps1 生成（值来自 pet-overrides.txt + 角色包）')
 $lines.Add('# 全部是相对路径：整个文件夹可以拷到任意机器 / 任意目录运行')
 $lines.Add("charDir=$charDirRel")
 $lines.Add("frames=$(Rel-Path (Pack-Path $charDir $man['frames']))")

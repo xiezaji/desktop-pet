@@ -1,5 +1,5 @@
 // ============================================================================
-// Pet 桌宠 —— 独立程序入口
+// Q Pet —— 独立程序入口
 // 编译：dotnet build Pet.csproj -c Release（产物 build\pet\Pet.exe）
 //       旧方式：csc /target:winexe /out:Pet.exe pet.cs Program.cs /r:System.dll,System.Drawing.dll
 // 运行：双击 Pet.exe（不需要 PowerShell、不需要 DeepSeek Harness）

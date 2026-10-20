@@ -1,5 +1,5 @@
 @echo off
-rem 打开 Pet 桌宠的设置（独立 exe）
+rem 打开 Q Pet 的设置（独立 exe）
 setlocal
 cd /d "%~dp0"
 if not exist "%~dp0PetSettings.exe" (
