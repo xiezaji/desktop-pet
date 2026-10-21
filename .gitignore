@@ -47,3 +47,10 @@ web/assets/chars/魔芋爽/
 # 本地浏览器 profile（开发调试用）
 web/_ep/
 web/_edgeprofile/
+
+# 开发调试产物
+web/_final.js
+web/_serve.py
+web/chk.png
+web/final.png
+web/shot*.png
