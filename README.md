@@ -29,9 +29,14 @@
   <img src="docs/images/hero.png" alt="Q Pet">
 </div>
 
-Q Pet 是一款 Windows 桌面宠物：透明置顶、点击穿透、四类动画、语音台词、可换角色，数据只保存在本地。程序使用 Win32 + .NET Framework 4.8 编写，不联网，无第三方依赖。
+Q Pet 是一款桌面宠物：透明置顶、点击穿透、四类动画、语音台词、可换角色，数据只保存在本地。程序使用 Win32 + .NET Framework 4.8 编写，不联网，无第三方依赖。
 
 内置芙宁娜、阿米娅、小维、奶蛙四套角色包，附带预编译程序，解压即可运行。
+
+> **网页版**：本项目同时提供 [Q Pet · Web](web/)——用原生 JavaScript + Canvas + Web Audio
+> 重写的网页移植版，打开链接就能玩，无需安装。
+> 资源体积从桌面端的 139 MB 压到 **8.3 MB**（WebP + MP3）。
+> 详见 [`web/README.md`](web/README.md)。
 
 ## 功能
 
