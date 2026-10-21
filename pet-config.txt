@@ -1,6 +1,6 @@
 # Pet 桌宠配置 —— 由 make-pet-config.ps1 生成（值来自 pet-overrides.txt + 角色包）
 # 全部是相对路径：整个文件夹可以拷到任意机器 / 任意目录运行
-charDir=chars\小维
+charDir=chars\阿米娅
 frames=chars\小维\动画\frames.bin
 meta=chars\小维\动画\frames.txt
 posfile=pet-pos.txt
@@ -22,7 +22,7 @@ bubbleFontSize=10.5
 themeColor=005FB8
 statsfile=pet-stats.txt
 statsKeys=1
-volume=100
+volume=20
 animIdle=1
 animPress=1
 animClick=1
@@ -30,7 +30,7 @@ animDrag=1
 animSpeed=1.00
 speedIdle=100
 speedPress=100
-speedClick=100
+speedClick=121
 speedDrag=100
 lang0name=小维
 lang0press=chars\小维\音效\voices\今天又轮到谁粉身碎骨了呢？.wav

@@ -1,5 +1,5 @@
-w=234
-h=237
+w=427
+h=432
 idle=24
 press=6
 click=6
