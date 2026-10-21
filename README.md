@@ -35,8 +35,12 @@ Q Pet 是一款桌面宠物：透明置顶、点击穿透、四类动画、语�
 
 > **网页版**：本项目同时提供 [Q Pet · Web](web/)——用原生 JavaScript + Canvas + Web Audio
 > 重写的网页移植版，打开链接就能玩，无需安装。
-> 资源体积从桌面端的 139 MB 压到 **8.3 MB**（WebP + MP3）。
+> 资源体积从桌面端的 139 MB 压到 **5.2 MB**（WebP + MP3）。
 > 详见 [`web/README.md`](web/README.md)。
+
+<div align="center">
+  <img src="docs/images/web/online-bubble.png" alt="Q Pet 网页版" width="820">
+</div>
 
 ## 功能
 
