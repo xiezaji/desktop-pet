@@ -27,10 +27,21 @@ window.addEventListener('unhandledrejection',e=>window.__diag.errors.push('Promi
       <span class="pill" id="pill-char">角色 <b>—</b></span>
       <span class="pill" id="pill-voice">语音 <b>—</b></span>
       <span class="pill" id="pill-fps">帧率 <b>—</b></span>
+      <button class="icon-btn" id="btn-toggle-pet" title="隐藏 / 显示桌宠" aria-label="隐藏或显示桌宠"></button>
     </header>
 
     <div class="canvas-wrap" id="canvas-wrap">
       <canvas id="pet-canvas"></canvas>
+
+      <!-- 隐藏态占位：保证用户找得回来 -->
+      <div id="pet-placeholder">
+        <div class="ph-box">
+          <div class="ph-icon">&#128065;</div>
+          <div class="ph-title">桌宠已隐藏</div>
+          <div class="ph-sub">渲染已暂停，不占 CPU</div>
+          <button class="btn primary" id="btn-restore">唤回桌宠</button>
+        </div>
+      </div>
 
       <div class="loader" id="loader">
         <div class="loader-box">

@@ -119,6 +119,59 @@ body {
 #pet-canvas:active { cursor: grabbing; }
 #pet-canvas.dragging { filter: drop-shadow(0 12px 24px rgba(0,0,0,.18)); }
 
+/* 隐藏态：画布淡出（占位提示由 #pet-placeholder 控制） */
+/* 顶栏显示/隐藏切换按钮 */
+#btn-toggle-pet {
+  width: 30px; height: 30px;
+  font-size: 13px; line-height: 1;
+  color: var(--ink-2);            /* 4.5:1+ 对比度 */
+  border-color: var(--line);
+}
+#btn-toggle-pet:hover { background: var(--bg); color: var(--ink); border-color: var(--stroke); }
+#btn-toggle-pet:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* 隐藏态：描边 + 主题色，一眼看出「现在是关的」 */
+#btn-toggle-pet.off {
+  color: var(--accent-ink);
+  background: var(--accent-bg);
+  border-color: var(--accent-line);
+}
+#btn-toggle-pet.off:hover { background: var(--accent-bg); border-color: var(--accent); }
+
+#pet-canvas.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.92);
+  transition: opacity .22s var(--ease), transform .22s var(--ease);
+}
+
+/* 隐藏时的占位提示 —— 必须显眼，保证用户找得回来 */
+#pet-placeholder {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  z-index: 6;
+  opacity: 0; pointer-events: none;
+  transition: opacity .22s var(--ease);
+}
+#pet-placeholder.show { opacity: 1; pointer-events: auto; }
+
+.ph-box {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 28px 36px;
+  border: 1px dashed var(--stroke);
+  border-radius: var(--r-xl);
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(6px);
+  text-align: center;
+}
+.ph-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--bg); color: var(--ink-3);
+  font-size: 20px;
+}
+.ph-title { font-size: var(--fs-title); font-weight: 700; }
+.ph-sub { font-size: var(--fs-foot); color: var(--ink-3); max-width: 300px; line-height: 1.6; }
+
 /* 加载态 */
 .loader {
   position: absolute; inset: 0;

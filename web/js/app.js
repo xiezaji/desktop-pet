@@ -33,14 +33,16 @@
     if (pc) pc.querySelector('b').textContent = (pet.charData && pet.charData.name) || '—';
     if (pv) pv.querySelector('b').textContent = ((pet.charData && pet.charData.voices || []).length) + ' 条';
 
-    // 帧率统计
-    let frames = 0, last = performance.now();
+    // 帧率统计（隐藏时不再统计，避免无意义开销）
+    let frames = 0, last = performance.now(), fpsText = '—';
     (function fpsLoop() {
+      if (!pet.visible) { frames = 0; last = performance.now(); requestAnimationFrame(fpsLoop); return; }
       frames++;
       const now = performance.now();
       if (now - last >= 1000) {
-        if (pf) pf.querySelector('b').textContent = Math.round(frames * 1000 / (now - last)) + ' fps';
+        fpsText = Math.round(frames * 1000 / (now - last)) + ' fps';
         frames = 0; last = now;
+        if (pet.visible && pf) pf.querySelector('b').textContent = fpsText;
       }
       requestAnimationFrame(fpsLoop);
     })();
@@ -66,11 +68,35 @@
       toast('已重置位置');
     });
 
+    // ---- 显示 / 隐藏桌宠：设置开关 / 顶栏按钮 / 唤回按钮 / 右键菜单，四处共用同一入口 ----
+    const phEl = document.getElementById('pet-placeholder');
+    const toggleBtn = document.getElementById('btn-toggle-pet');
+
+    function paintVisibility() {
+      const v = pet.visible;
+      phEl.classList.toggle('show', !v);
+      toggleBtn.textContent = v ? '●' : '○';           // ● 显示中 / ○ 已隐藏
+      toggleBtn.classList.toggle('off', !v);            // 隐藏态用描边+主题色，视觉上一眼可辨
+      toggleBtn.title = v ? '隐藏桌宠' : '显示桌宠';
+      toggleBtn.setAttribute('aria-pressed', String(v));
+      if (pf) pf.querySelector('b').textContent = v ? fpsText : '暂停';
+    }
+
+    pet.onConfigChange(paintVisibility);
+    paintVisibility();
+
+    toggleBtn.addEventListener('click', () => pet.toggleVisible());
+    document.getElementById('btn-restore').addEventListener('click', () => {
+      pet.setVisible(true);
+      toast('桌宠回来了');
+    });
+
     // 右键菜单（对应桌面端的「打开设置 / 退出桌宠」）
     canvas.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       const items = [
         ['随机说一句', () => pet._autoLine(true)],
+        [() => pet.visible ? '隐藏桌宠' : '显示桌宠', () => pet.toggleVisible()],
         ['打开设置', () => { panel.classList.remove('collapsed'); fab.classList.remove('show'); }],
         ['重置位置', () => { pet.resetPos(); toast('已重置位置'); }],
       ];
@@ -97,7 +123,7 @@
     });
     for (const [label, fn] of items) {
       const b = document.createElement('button');
-      b.textContent = label;
+      b.textContent = typeof label === 'function' ? label() : label;
       Object.assign(b.style, {
         display: 'block', width: '100%', textAlign: 'left', padding: '7px 12px',
         border: '0', background: 'transparent', borderRadius: '4px', cursor: 'pointer',

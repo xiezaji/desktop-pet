@@ -346,6 +346,15 @@
       b.appendChild(el('h1', { class: 'page-title', text: '通用设置' }));
       b.appendChild(el('p', { class: 'page-sub', text: '外观与行为' }));
 
+      // 显示桌宠 —— 放在最前，这是最全局的控制
+      const cardV = el('div', { class: 'card' });
+      cardV.appendChild(el('div', { class: 'card-head' }, [el('h3', { text: '桌宠' })]));
+      cardV.appendChild(this._row('显示桌宠', '关闭后暂停渲染', [
+        this._switch(this.pet.visible, v => this.pet.setVisible(v)),
+      ]));
+      cardV.appendChild(el('div', { class: 'notice', text: '关掉后可一键唤回。' }));
+      b.appendChild(cardV);
+
       const card = el('div', { class: 'card' });
       card.appendChild(el('div', { class: 'card-head' }, [el('h3', { text: '主题色' })]));
       const sw = el('div', { class: 'swatches' });

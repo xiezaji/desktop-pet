@@ -17,6 +17,7 @@
 
   const DEFAULT_CFG = {
     char: null,               // 当前角色 id
+    visible: true,            // 桌宠是否显示（隐藏时省 CPU 并暂停渲染）
     bubbleOn: true,
     bubbleH: 110,
     bubbleEveryMs: 300000,
@@ -57,6 +58,8 @@
       this.pos = { x: 0, y: 0 };
       this._raf = null;
       this._onConfigChange = null;
+      this.visible = this.cfg.visible !== false;
+      this._lastTickAt = 0;
     }
 
     /* ---------------- 配置持久化 ---------------- */
@@ -288,6 +291,7 @@
 
     /* ---------------- 台词 ---------------- */
     async _autoLine(force) {
+      if (!this.visible) return;
       if (!this.cfg.bubbleOn) return;
       const txt = await this.audio.playNext();
       if (txt) {
@@ -455,6 +459,37 @@
       if (patch.scale !== undefined || patch.bubbleOn !== undefined || patch.bubbleH !== undefined) this._resizeCanvas();
       this._emitConfig();
     }
+
+    /**
+     * 显示 / 隐藏桌宠。
+     * 隐藏时**暂停渲染循环**（真省 CPU，不是只藏起来继续空转），
+     * 同时停止语音、取消气泡，并通知外部切换占位提示。
+     */
+    setVisible(v) {
+      const nv = !!v;
+      if (nv === this.visible) return;
+      this.visible = nv;
+      this.cfg.visible = nv;
+      this.saveCfg();
+
+      const cv = this.canvas;
+      if (cv) cv.classList.toggle('hidden', !nv);
+
+      if (nv) {
+        // 恢复渲染：重置计时，避免隐藏期间累积的 dt 造成动画跳帧
+        this.lastTick = performance.now();
+        this.nextAutoBubble = Date.now() + Math.min(this.cfg.bubbleEveryMs || 300000, 60000);
+        if (!this._raf) this._loop();
+      } else {
+        if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
+        this.audio.stop();
+        this.bubble.hide();
+        this.bubble.scroll = 0;
+      }
+      this._emitConfig();
+    }
+
+    toggleVisible() { this.setVisible(!this.visible); }
 
     resetPos() {
       this.pos = { x: 0, y: 0 };
