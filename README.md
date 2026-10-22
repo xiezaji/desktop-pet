@@ -262,6 +262,9 @@ q-pet/
 ├─ sprites.py                 动画帧生成
 ├─ anim_custom.py             自定义动画
 ├─ make-pet-config.ps1        生成运行配置
+├─ build.cmd                  一键编译两个项目并复制产物（源码分发用）
+├─ pack-for-friend.ps1        打包成品分发包
+├─ pack-source-for-friend.ps1 打包源码分发包
 ├─ start-pet.cmd / .vbs       启动脚本
 ├─ run-pet-settings.cmd       打开设置
 ├─ pet-config.txt             运行配置（相对路径）
