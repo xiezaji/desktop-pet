@@ -1,6 +1,6 @@
-# Pet 桌宠配置 —— 由 make-pet-config.ps1 生成（值来自 pet-overrides.txt + 角色包）
+# Q Pet 配置 —— 由 make-pet-config.ps1 生成（值来自 pet-overrides.txt + 角色包）
 # 全部是相对路径：整个文件夹可以拷到任意机器 / 任意目录运行
-charDir=chars\阿米娅
+charDir=chars\小维
 frames=chars\小维\动画\frames.bin
 meta=chars\小维\动画\frames.txt
 posfile=pet-pos.txt
@@ -38,4 +38,5 @@ lang0release=chars\小维\音效\voices\别急别急，人人有份~.wav
 soundSet=furina
 sfxGroup=auto
 clickLineMode=random
+showPet=1
 bubbleInk=1A1A1A

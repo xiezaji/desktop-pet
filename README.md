@@ -50,6 +50,7 @@ Q Pet 是一款桌面宠物：透明置顶、点击穿透、四类动画、语�
 - 拖动改变位置，下次启动回到原处。
 - 气泡支持四种外框、颜色、字体、字号，长文本可滚动。
 - 托盘菜单、双击打开设置、开机自启。
+- 设置面板「通用设置 → 桌面显示」可一键关掉 / 打开桌宠（关掉后进程直接退出）。
 - 角色包就是一个文件夹，新增角色不需要改程序。
 - 本地统计屏幕与活跃时长、软件使用、按键次数和角色陪伴时长。
 
@@ -165,6 +166,41 @@ python anim_custom.py reset --pack "chars/小维" --slot click
 | 不想使用预编译 exe | 参考下方「构建」，从源码自行编译 |
 </details>
 
+## 发给朋友
+
+不要直接把 `Pet.exe` 单独发出去：微信 / QQ 会拦 exe，而且单独一个 exe 一定带「来自其他计算机」标记，
+对方一运行就弹「Windows 已保护你的电脑」。正确做法是**发一个解压即用的 zip**：
+
+```powershell
+# 只带当前角色（约 8 MB，好传）
+powershell -ExecutionPolicy Bypass -File pack-for-friend.ps1
+# 带 chars\ 下全部角色（约 130 MB）
+powershell -ExecutionPolicy Bypass -File pack-for-friend.ps1 -AllChars
+```
+
+产物是 `dist\QPet-<日期>.zip`，里面已经放好 `首次运行请先看这里.txt`（含三步说明）。
+
+**关键的一步要提醒对方**：右键 zip → 属性 → 勾「解除锁定」→ 确定，**然后再解压**。
+这样解压出来的 exe 不带「来自其他计算机」标记，SmartScreen 根本不会触发。
+已经解压了也不要紧，右键 `Pet.exe` → 属性 → 勾「解除锁定」同样有效。
+
+### 另一种分发方式：让朋友自己编译
+
+想彻底不依赖「解除锁定」这一步，可以发源码包，让 exe 在他自己电脑上生成
+（本机新编译的文件不带 MOTW，同样不会弹警告）：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File pack-source-for-friend.ps1
+```
+
+产物 `dist\QPet-源码-<日期>.zip`，对方的操作只有三步：装 [.NET SDK](https://dotnet.microsoft.com/download)
+→ 解压 → 双击 `build.cmd`（脚本会自动 `dotnet build` 两个项目并把产物复制到当前目录）。
+代价是他要装一次 SDK（几百 MB）；两个 csproj 已带
+`Microsoft.NETFramework.ReferenceAssemblies`，没装 .NET Framework 4.8 开发包也能编。
+
+想彻底不弹警告只能买代码签名证书（OV 约千元/年，需实名，签完仍要等信誉积累），
+个人自用/送朋友没必要；exe 本身是本机编译的 .NET 程序，Microsoft Defender 实测无检出。
+
 ## 操作
 
 | 操作 | 效果 |
@@ -242,4 +278,6 @@ q-pet/
 
 ## 素材与版权
 
-内置角色的立绘、语音等素材版权归原权利方所有，仅供个人学习与自用，请勿用于商业用途或二次分发。仓库未附带开源许可证。
+内置角色的立绘、语音等素材版权归原权利方所有，仅供个人学习与自用，请勿用于商业用途或二次分发。
+
+代码部分以 [MIT 许可证](LICENSE) 授权；上述角色素材不包含在 MIT 授权范围内。

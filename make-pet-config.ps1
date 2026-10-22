@@ -148,6 +148,8 @@ $lines.Add("lang0release=$(Rel-Path $relPath)")
 $lines.Add('soundSet=' + (Ov 'soundSet' 'furina'))
 $lines.Add('sfxGroup=' + $sfxGroup)
 $lines.Add('clickLineMode=' + (Ov 'clickLineMode' 'random'))
+# 桌面显示总开关（设置面板「通用设置 → 桌面显示」）：0 = 桌宠不启动
+$lines.Add('showPet=' + (Ov 'showPet' '1'))
 # 文字颜色
 $lines.Add('bubbleInk=' + (Ov 'bubbleInk' 'auto'))
 

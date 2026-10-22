@@ -59,6 +59,8 @@ static class Settings
     static StackPanel UiContent;
     static WrapPanel ThemeColorHost;
     static CheckBox ChkAutoStart;
+    static CheckBox ChkShowPet;                                        // 桌面显示：是否打开桌宠
+    static bool _showPetSel = true;                                    // 与上面的开关同步（切换即生效）
     static Color _themeColor = Color.FromRgb(0x00, 0x5F, 0xB8);        // 界面主题色
     static readonly string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     // 显示名统一为 Q Pet；exe 文件名保留 Pet/PetSettings，兼容启动脚本与配置
@@ -192,6 +194,7 @@ static class Settings
         int page = 0, shotH = 740, shotScroll = 0;
         string shotPath = "";
         string themeTest = "";
+        string showPetTest = "";
         for (int i = 0; i < args.Length; i++)
         {
             if (args[i] == "--selftest" || args[i] == "-selftest") selfTest = true;
@@ -201,6 +204,7 @@ static class Settings
             else if (args[i] == "--shot-scroll" && i + 1 < args.Length) int.TryParse(args[++i], out shotScroll);
             else if (args[i] == "--dialog-test") dialogTest = true;
             else if (args[i] == "--themetest" && i + 1 < args.Length) themeTest = args[++i];
+            else if (args[i] == "--showpet" && i + 1 < args.Length) showPetTest = args[++i];
         }
         LoadOverrides();
         try
@@ -231,6 +235,19 @@ static class Settings
             catch (Exception) { }
         };
         if (selfTest) { SelfTest(); return; }
+        // 开发自验：「桌面显示」开关不做界面也能验一遍（写盘 + 启停进程 + 结果落文件）
+        if (showPetTest != "")
+        {
+            SetShowPet(showPetTest == "1");
+            System.Threading.Thread.Sleep(1500);        // 等进程真的起来 / 退掉
+            var sb = new StringBuilder();
+            sb.AppendLine("桌面显示开关实测：" + (showPetTest == "1" ? "打开" : "关闭"));
+            sb.AppendLine("  pet-config.txt     showPet=" + ReadKey(Path.Combine(Here, "pet-config.txt"), "showPet"));
+            sb.AppendLine("  pet-overrides.txt  showPet=" + ReadKey(Path.Combine(Here, "pet-overrides.txt"), "showPet"));
+            sb.AppendLine("  运行的 Pet.exe 进程数 = " + Process.GetProcessesByName("Pet").Length);
+            File.WriteAllText(Path.Combine(Here, "pet-showpet-test.txt"), sb.ToString(), new UTF8Encoding(false));
+            return;
+        }
         // 无界面截图：给「改完 UI 想确认有没有被挤掉」用的（不弹窗、不依赖 DWM 缩放）
         if (shotPath != "")
         {
@@ -268,6 +285,23 @@ static class Settings
         string txt = File.ReadAllText(p, Encoding.UTF8);
         foreach (Match m in Regex.Matches(txt, @"([A-Za-z0-9_]+)=([^\r\n]*?)(?=\s+[A-Za-z0-9_]+=|\s*$)"))
             Cur[m.Groups[1].Value] = m.Groups[2].Value.Trim();
+    }
+
+    // 读 key=value 文件里的某一个键（开发自验用：确认开关真的写进配置文件了）
+    static string ReadKey(string path, string key)
+    {
+        try
+        {
+            if (!File.Exists(path)) return "（文件不存在）";
+            foreach (string raw in File.ReadAllLines(path, Encoding.UTF8))
+            {
+                int eq = raw.IndexOf('=');
+                if (eq <= 0) continue;
+                if (raw.Substring(0, eq).Trim() == key) return raw.Substring(eq + 1).Trim();
+            }
+            return "（没有这个键）";
+        }
+        catch (Exception) { return "（读取失败）"; }
     }
 
     static int CurSize
@@ -396,6 +430,7 @@ static class Settings
         LblBubHint = (TextBlock)Win.FindName("lblBubHint");
         BtnUpBubble.Click += (s, e) => UploadBubbleFrame();
         _themeColor = WpfParseHex(CurOf("themeColor", ""), _themeColor);
+        _showPetSel = CurOf("showPet", "1") != "0";
         ApplyThemeColor(_themeColor);
         BtnBubbleColor.Click += (s, e) =>
         {
@@ -1704,6 +1739,28 @@ static class Settings
         if (UiContent == null) return;
         UiContent.Children.Clear();
 
+        // ---- 桌面显示：总开关（关掉后 Pet.exe 根本不启动）----
+        // 这个开关**切换即生效**：直接写盘 + 启停进程，所以不进「未保存」判定（见 Snapshot）。
+        var cardShow = new Border { Style = (Style)Win.FindResource("Card") };
+        var spShow = new StackPanel();
+        spShow.Children.Add(Txt("桌面显示", 14, "#E4000000", true));
+        spShow.Children.Add(Txt("关掉后她不在桌面出现", 12, "#99000000"));
+        ChkShowPet = new CheckBox
+        {
+            Content = "在桌面显示桌宠", FontSize = 13, Margin = new Thickness(0, 10, 0, 0),
+            Style = (Style)Win.FindResource("ToggleSwitch")
+        };
+        ChkShowPet.IsChecked = _showPetSel;      // 先设值再挂事件，避免重建页面时误触发
+        ChkShowPet.Checked += (s, e) => SetShowPet(true);
+        ChkShowPet.Unchecked += (s, e) => SetShowPet(false);
+        spShow.Children.Add(ChkShowPet);
+        var tipShow = Txt("切换立即生效", 11, "#99000000");
+        tipShow.ToolTip = "关掉后桌宠进程会退出，不再占内存、也不统计按键。\n想再打开：双击 PetSettings.exe → 通用设置 → 桌面显示。";
+        tipShow.Margin = new Thickness(0, 6, 0, 0);
+        spShow.Children.Add(tipShow);
+        cardShow.Child = spShow;
+        UiContent.Children.Add(cardShow);
+
         var card1 = new Border { Style = (Style)Win.FindResource("Card") };
         var sp1 = new StackPanel();
         sp1.Children.Add(Txt("主题颜色", 14, "#E4000000", true));
@@ -1818,7 +1875,12 @@ static class Settings
             CharEntry ce = SelectedChar;
             var d = CollectOverrides(ce != null && !string.IsNullOrEmpty(ce.Dir) ? RelToHere(ce.Dir) : CurCharDir);
             var sb = new StringBuilder();
-            foreach (KeyValuePair<string, string> kv in d) sb.Append(kv.Key).Append('=').Append(kv.Value).Append(';');
+            foreach (KeyValuePair<string, string> kv in d)
+            {
+                // showPet 是「切换即生效」的开关（SetShowPet 立刻写盘），不算未保存的改动
+                if (kv.Key == "showPet") continue;
+                sb.Append(kv.Key).Append('=').Append(kv.Value).Append(';');
+            }
             return sb.ToString();
         }
         catch (Exception)
@@ -2114,6 +2176,7 @@ static class Settings
     {
         var d = new Dictionary<string, string>();
         d["charDir"] = charDir;
+        d["showPet"] = _showPetSel ? "1" : "0";
         d["soundSet"] = "furina";
         d["clickVoice"] = ChkClick.IsChecked == true ? "1" : "0";
         d["bubbleH"] = (ChkBub.IsChecked == true ? (int)SldBub.Value : 0).ToString(CultureInfo.InvariantCulture);
@@ -2291,7 +2354,9 @@ static class Settings
             MarkSaved();                       // 保存后清掉「未保存」提示，关窗不再拦
             RestartPet();
             Dlg.Info("已保存并应用",
-                "角色 " + ce.Name + "　·　" + size + "px　·　音量 " + ov["volume"] + "%\n桌宠正在重启，稍等一下就能看到效果。", "知道了");
+                "角色 " + ce.Name + "　·　" + size + "px　·　音量 " + ov["volume"] + "%\n"
+                + (_showPetSel ? "桌宠正在重启，稍等一下就能看到效果。"
+                               : "桌宠现在是关闭状态（通用设置 → 桌面显示），打开后才会出现。"), "知道了");
             Win.Close();
         }
         catch (Exception ex)
@@ -2322,7 +2387,46 @@ static class Settings
         File.WriteAllLines(p, outLines.ToArray(), new UTF8Encoding(false));
     }
 
-    static void RestartPet()
+    // 只把指定的几个键补进 pet-overrides.txt（不动其它行；没有就追加）。
+    // 给「切换即生效」的开关用：不能走 CollectOverrides→WriteOverrides，
+    // 否则会把界面上其它还没保存的改动一起写盘。
+    static void PatchOverrides(Dictionary<string, string> kv)
+    {
+        string p = Path.Combine(Here, "pet-overrides.txt");
+        var outLines = File.Exists(p) ? new List<string>(File.ReadAllLines(p, Encoding.UTF8)) : new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < outLines.Count; i++)
+        {
+            string line = outLines[i];
+            int eq = line.IndexOf('=');
+            if (eq <= 0) continue;
+            string k = line.Substring(0, eq).Trim();
+            string v;
+            if (kv.TryGetValue(k, out v) && !seen.Contains(k)) { outLines[i] = k + "=" + v; seen.Add(k); }
+        }
+        foreach (KeyValuePair<string, string> e in kv)
+            if (!seen.Contains(e.Key)) outLines.Add(e.Key + "=" + e.Value);
+        File.WriteAllLines(p, outLines.ToArray(), new UTF8Encoding(false));
+    }
+
+    // 桌面显示总开关：写盘 + 立即启停桌宠（不等「保存更改」，因为这个开关不涉及角色/动画）
+    static void SetShowPet(bool on)
+    {
+        _showPetSel = on;
+        try
+        {
+            var one = new Dictionary<string, string>();
+            one["showPet"] = on ? "1" : "0";
+            PatchOverrides(one);
+            PatchConfig(one);
+            if (on) RestartPet(); else StopPet();
+            if (LblDirty != null) LblDirty.Visibility = Snapshot() != _savedSnapshot ? Visibility.Visible : Visibility.Collapsed;
+        }
+        catch (Exception ex) { LogErr("showpet", ex); }
+    }
+
+    // 只停不启（关闭桌宠 / 重启前的第一步）
+    static void StopPet()
     {
         try
         {
@@ -2339,7 +2443,17 @@ static class Settings
             {
                 try { pr.Kill(); } catch (Exception) { }
             }
+        }
+        catch (Exception ex) { LogErr("stoppet", ex); }
+    }
+
+    static void RestartPet()
+    {
+        try
+        {
+            StopPet();
             System.Threading.Thread.Sleep(600);
+            if (!_showPetSel) return;          // 桌宠已被关掉：只停不启，否则又冒出来了
             string exe = Path.Combine(Here, PetExeName);
             if (File.Exists(exe)) Process.Start(new ProcessStartInfo(exe) { WorkingDirectory = Here });
         }
@@ -2351,18 +2465,7 @@ static class Settings
         if (!Dlg.Ask("让她先休息一下？",
             "退出后她会从桌面消失，按键统计和语音也会一起停下。\n下次双击 Pet.exe，她就又回来了。",
             "退出桌宠", "再陪一会儿", true)) return;
-        try
-        {
-            string pidf = Path.Combine(Here, "pet.pid");
-            if (File.Exists(pidf))
-            {
-                int pid;
-                if (int.TryParse(File.ReadAllText(pidf).Trim(), out pid))
-                { try { Process.GetProcessById(pid).Kill(); } catch (Exception) { } }
-            }
-            foreach (var pr in Process.GetProcessesByName("Pet")) { try { pr.Kill(); } catch (Exception) { } }
-        }
-        catch (Exception ex) { LogErr("quit", ex); }
+        StopPet();
         Win.Close();
     }
 
@@ -3604,6 +3707,10 @@ static class Settings
         catch (Exception ex) { sb.AppendLine("  未保存检测异常: " + ex.Message); }
         var icoImg = (Image)Win.FindName("imgIcon");
         sb.AppendLine("  窗口图标=" + (Win.Icon != null) + "  标题栏图标=" + (icoImg != null && icoImg.Source != null));
+        // 通用设置 → 桌面显示开关（没有它就没法关掉桌宠）
+        ShowPage("ui");
+        sb.AppendLine("  桌面显示开关=" + (ChkShowPet != null
+            ? (ChkShowPet.IsChecked == true ? "已打开" : "已关闭") : "✗ 未创建"));
         string elog = Path.Combine(Here, "pet-settings-err.log");
         int errs = File.Exists(elog) ? File.ReadAllLines(elog).Length : 0;
         sb.AppendLine("  错误日志条数 = " + errs + (errs == 0 ? " ✓ 无异常" : " ✗"));
@@ -4238,7 +4345,7 @@ static class Settings
             <!-- UI 设置（占位，先不加功能）-->
             <StackPanel x:Name=""pageUi"" Visibility=""Collapsed"">
               <TextBlock Text=""通用设置"" Style=""{StaticResource H1}"" Margin=""0,0,0,4""/>
-              <TextBlock Text=""外观与启动"" Style=""{StaticResource Sub}"" Margin=""0,0,0,20""/>
+              <TextBlock Text=""显示、外观与启动"" Style=""{StaticResource Sub}"" Margin=""0,0,0,20""/>
               <StackPanel x:Name=""uiContent""/>
             </StackPanel>
 

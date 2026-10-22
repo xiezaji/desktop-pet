@@ -22,4 +22,10 @@
     <Compile Include="Program.cs" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- 别人电脑上只要装了 .NET SDK、没装 .NET Framework 4.8 开发包时，
+         靠这个包提供 net48 的引用程序集，dotnet build 才不会报
+         「找不到 .NETFramework,Version=v4.8 的引用程序集」。本机已装开发包，有它也无副作用。 -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
 </Project>

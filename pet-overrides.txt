@@ -1,4 +1,4 @@
-charDir=chars\阿米娅
+charDir=chars\小维
 soundSet=furina
 clickVoice=1
 bubbleH=79
@@ -21,3 +21,4 @@ animClick=1
 speedClick=121
 animDrag=1
 speedDrag=100
+showPet=1
