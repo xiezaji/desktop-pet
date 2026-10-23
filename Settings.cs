@@ -87,7 +87,7 @@ static class Settings
     static Slider SldSize, SldBub, SldVol;
     static TextBlock LblSize, LblBub, LblSizeCap, LblVol, LblVoiceHint;
     static CheckBox ChkClick, ChkBub;
-    static StackPanel PageChar, PageVoice, PageBubble, PageAnim, PageStats, PageUi;
+    static StackPanel PageChar, PageVoice, PageBubble, PageAnim, PageStats, PageUi, PageAbout;
     static ScrollViewer Scroller;
     static MediaPlayer PreviewPlayer;
 
@@ -352,7 +352,7 @@ static class Settings
 
     static void SelectPage(int index)
     {
-        string[] keys = { "bubble", "ui", "char", "anim", "voice", "import", "stats" };
+        string[] keys = { "bubble", "ui", "char", "anim", "voice", "import", "stats", "about" };
         if (index >= 0 && index < keys.Length) ShowPage(keys[index]);
     }
 
@@ -374,12 +374,14 @@ static class Settings
             PageVoice.Visibility = key == "voice" ? Visibility.Visible : Visibility.Collapsed;
             PageImport.Visibility = key == "import" ? Visibility.Visible : Visibility.Collapsed;
             PageStats.Visibility = key == "stats" ? Visibility.Visible : Visibility.Collapsed;
+            PageAbout.Visibility = key == "about" ? Visibility.Visible : Visibility.Collapsed;
 
             if (key == "stats") { BuildStatsPage(); StartLiveStats(); } else StopLiveStats();
             if (key == "import") RefreshImport();
             if (key == "voice") LoadVoiceLibrary();
             if (key == "bubble") { BuildBubbleColorTiles(); BuildBubbleInkTiles(); DrawBubblePreview(); }
             if (key == "ui") BuildGeneralPage();
+            if (key == "about") BuildAboutPage();
             if (key == "bubble") DrawBubblePreview();
             if (key == "anim") BuildAnimPage(); else StopAnimPreviews();
             Scroller.ScrollToTop();
@@ -482,6 +484,7 @@ static class Settings
         PageAnim = (StackPanel)Win.FindName("pageAnim");
         PageStats = (StackPanel)Win.FindName("pageStats");
         PageUi = (StackPanel)Win.FindName("pageUi");
+        PageAbout = (StackPanel)Win.FindName("pageAbout");
         UiContent = (StackPanel)Win.FindName("uiContent");
         PageImport = (StackPanel)Win.FindName("pageImport");
         ImportList = (StackPanel)Win.FindName("importList");
@@ -3142,6 +3145,161 @@ static class Settings
     }
 
 
+    // ---------------- 关于 ----------------
+    // 版本号来自两个 exe 的文件属性（csproj 里的 FileVersion / InformationalVersion）。
+    // 这里刻意同时显示 Pet.exe 与 PetSettings.exe：只要两者不一致，就说明有一个没跟着更新。
+    const string RepoUrl = "https://github.com/xiezaji/q-pet";
+    const string WebUrl = "https://xiezaji.github.io/q-pet/";
+
+    static void BuildAboutPage()
+    {
+        if (PageAbout == null) return;
+        PageAbout.Children.Clear();
+
+        PageAbout.Children.Add(new TextBlock { Text = "关于", Style = (Style)Win.FindResource("H1") });
+        PageAbout.Children.Add(new TextBlock
+        {
+            Text = "版本、目录与链接",
+            Style = (Style)Win.FindResource("Sub"),
+            Margin = new Thickness(0, 4, 0, 16)
+        });
+
+        // ---- 版本 ----
+        string vSet = ExeVersion("PetSettings.exe");
+        string vPet = ExeVersion("Pet.exe");
+        var spVer = new StackPanel();
+        spVer.Children.Add(new TextBlock { Text = "版本", Style = (Style)Win.FindResource("H2") });
+        spVer.Children.Add(VersionRow("设置面板", "PetSettings.exe", vSet, BuiltAt("PetSettings.exe")));
+        spVer.Children.Add(new Border { Style = (Style)Win.FindResource("Divider") });
+        spVer.Children.Add(VersionRow("桌宠本体", "Pet.exe", vPet, BuiltAt("Pet.exe")));
+        if (vSet != vPet || vSet == "未找到" || vPet == "未找到")
+        {
+            var warn = Txt("两个 exe 版本不一致，重新运行 build.cmd 可对齐", 11, "#C42B1C");
+            warn.Margin = new Thickness(0, 10, 0, 0);
+            warn.ToolTip = "根目录的 Pet.exe 与 PetSettings.exe 应当来自同一次编译。\n不一致时，界面里的新功能可能对桌宠本体不生效。";
+            spVer.Children.Add(warn);
+        }
+        PageAbout.Children.Add(Card(spVer));
+
+        // ---- 程序目录 ----
+        var spDir = new StackPanel();
+        spDir.Children.Add(new TextBlock { Text = "程序目录", Style = (Style)Win.FindResource("H2") });
+        var tipDir = Txt("配置、角色包、统计都在这里", 12, "#99000000");
+        tipDir.Margin = new Thickness(0, 3, 0, 0);
+        spDir.Children.Add(tipDir);
+        var tbPath = new TextBox
+        {
+            Text = Here, IsReadOnly = true, Height = 32, Margin = new Thickness(0, 12, 0, 0),
+            ToolTip = "可以选中复制。整个文件夹能直接拷到别的电脑或 U 盘，配置全是相对路径。"
+        };
+        spDir.Children.Add(tbPath);
+        var btnDir = new Button
+        {
+            Content = "打开文件夹", Style = (Style)Win.FindResource("SecondaryButton"),
+            HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 10, 0, 0)
+        };
+        btnDir.Click += (s, e) => OpenExternal(Here);
+        spDir.Children.Add(btnDir);
+        PageAbout.Children.Add(Card(spDir));
+
+        // ---- 链接 ----
+        var spLink = new StackPanel();
+        spLink.Children.Add(new TextBlock { Text = "链接", Style = (Style)Win.FindResource("H2") });
+        var linkTip = Txt("遇到问题先看仓库里的说明", 12, "#99000000");
+        linkTip.Margin = new Thickness(0, 3, 0, 0);
+        spLink.Children.Add(linkTip);
+        var linkRow = new WrapPanel { Margin = new Thickness(0, 12, 0, 0) };
+        AddLinkButton(linkRow, "GitHub 仓库", RepoUrl);
+        AddLinkButton(linkRow, "在线试玩", WebUrl);
+        AddLinkButton(linkRow, "查看许可证", RepoUrl + "/blob/main/LICENSE");
+        spLink.Children.Add(linkRow);
+        PageAbout.Children.Add(Card(spLink));
+
+        // ---- 说明 ----
+        var spAbout = new StackPanel();
+        spAbout.Children.Add(new TextBlock { Text = "关于本程序", Style = (Style)Win.FindResource("H2") });
+        var intro = Txt("Q Pet 是本地桌宠：不联网、无账号，也不需要安装。", 13, "#E4000000");
+        intro.Margin = new Thickness(0, 8, 0, 0);
+        spAbout.Children.Add(intro);
+        var privacy = Txt("使用统计只写在本目录的 txt 里。", 12, "#99000000");
+        privacy.Margin = new Thickness(0, 4, 0, 0);
+        spAbout.Children.Add(privacy);
+        var copy = Txt("© 2026 Q Pet contributors　·　代码 MIT，角色素材版权归原权利方", 11, "#99000000");
+        copy.Margin = new Thickness(0, 10, 0, 0);
+        spAbout.Children.Add(copy);
+        PageAbout.Children.Add(Card(spAbout));
+    }
+
+    // 版本行：四列固定宽度，两个 exe 的版本号与构建时间能对齐
+    static Grid VersionRow(string label, string exe, string ver, string built)
+    {
+        var g = new Grid { Margin = new Thickness(0, 6, 0, 0) };
+        g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(96) });
+        g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(140) });
+        g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(64) });
+        g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        var l = Txt(label, 12, "#99000000");
+        l.VerticalAlignment = VerticalAlignment.Center;
+        g.Children.Add(l);
+        var n = Txt(exe, 13, "#E4000000");
+        Grid.SetColumn(n, 1);
+        g.Children.Add(n);
+        var v = Txt(ver, 13, "#E4000000");
+        Grid.SetColumn(v, 2);
+        g.Children.Add(v);
+        var b = Txt(built, 12, "#99000000");
+        Grid.SetColumn(b, 3);
+        g.Children.Add(b);
+        return g;
+    }
+
+    static void AddLinkButton(Panel host, string text, string url)
+    {
+        var b = new Button
+        {
+            Content = text, Style = (Style)Win.FindResource("SecondaryButton"),
+            Margin = new Thickness(0, 0, 8, 8)
+        };
+        b.Click += (s, e) => OpenExternal(url);
+        host.Children.Add(b);
+    }
+
+    // 读 exe 的文件版本：ProductVersion 在有 InformationalVersion 时就是「1.0.0」这种短格式
+    static string ExeVersion(string file)
+    {
+        try
+        {
+            string p = Path.Combine(Here, file);
+            if (!File.Exists(p)) return "未找到";
+            FileVersionInfo vi = FileVersionInfo.GetVersionInfo(p);
+            string v = vi.ProductVersion;
+            if (string.IsNullOrEmpty(v)) v = vi.FileVersion;
+            if (string.IsNullOrEmpty(v)) return "未知";
+            // 有些 SDK 版本会把「+提交号」拼进 ProductVersion，界面上不需要
+            int plus = v.IndexOf('+');
+            if (plus > 0) v = v.Substring(0, plus);
+            return v.Trim();
+        }
+        catch (Exception ex) { LogErr("about-version", ex); return "读取失败"; }
+    }
+
+    static string BuiltAt(string file)
+    {
+        try
+        {
+            string p = Path.Combine(Here, file);
+            if (!File.Exists(p)) return "";
+            return "构建于 " + File.GetLastWriteTime(p).ToString("yyyy-MM-dd HH:mm");
+        }
+        catch (Exception) { return ""; }
+    }
+
+    static void OpenExternal(string target)
+    {
+        try { Process.Start(new ProcessStartInfo(target) { UseShellExecute = true }); }
+        catch (Exception ex) { LogErr("open-external", ex); Dlg.Info("打不开", ex.Message, "好"); }
+    }
+
     static void BuildStatsPage()
     {
         if (PageStats == null) return;
@@ -3620,6 +3778,7 @@ static class Settings
                 + (PageUi.Visibility == Visibility.Visible ? "通用" : "")
                 + (PageAnim.Visibility == Visibility.Visible ? "动画" : "")
                 + (PageStats.Visibility == Visibility.Visible ? "统计" : "")
+                + (PageAbout.Visibility == Visibility.Visible ? "关于" : "")
                 + (PageImport.Visibility == Visibility.Visible ? "导入" : "") + "]");
         }
         sb.AppendLine("  导航切换: " + string.Join(" ", rows.ToArray()));
@@ -4202,6 +4361,8 @@ static class Settings
           <ListBoxItem Content=""导入"" Tag=""import""/>
           <ListBoxItem Content=""统计"" Style=""{StaticResource NavHeader}""/>
           <ListBoxItem Content=""使用统计"" Tag=""stats""/>
+          <ListBoxItem Content=""其他"" Style=""{StaticResource NavHeader}""/>
+          <ListBoxItem Content=""关于"" Tag=""about""/>
         </ListBox>
       </StackPanel>
 
@@ -4455,6 +4616,9 @@ static class Settings
 
             <!-- 统计（内容由 C# 动态生成）-->
             <StackPanel x:Name=""pageStats"" Visibility=""Collapsed""/>
+
+            <!-- 关于（内容由 BuildAboutPage 生成） -->
+            <StackPanel x:Name=""pageAbout"" Visibility=""Collapsed""/>
 
             <!-- 新建角色：一个角色一个文件夹，把用户给的东西传进去 -->
             <StackPanel x:Name=""pageImport"" Visibility=""Collapsed"">

@@ -9,7 +9,16 @@
     <RootNamespace>PetSettings</RootNamespace>
     <LangVersion>7.3</LangVersion>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- 版本信息：与 Pet.csproj 保持同一组数值 -->
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <AssemblyTitle>Q Pet 设置</AssemblyTitle>
+    <Product>Q Pet</Product>
+    <Company>Q Pet contributors</Company>
+    <Copyright>MIT License · 2026 Q Pet contributors</Copyright>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <ApplicationIcon>pet.ico</ApplicationIcon>
