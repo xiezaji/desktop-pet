@@ -6,6 +6,8 @@
 #       默认只带**当前角色**（pet-config.txt 里的 charDir），约 15–20 MB，好发
 #   powershell -ExecutionPolicy Bypass -File pack-for-friend.ps1 -AllChars
 #       带 chars\ 下全部角色（约 130 MB）
+#   powershell -ExecutionPolicy Bypass -File pack-for-friend.ps1 -Char 小维
+#       指定角色，忽略当前配置（发版打包用这个，免得带上本机正在用的角色）
 #   产物：dist\QPet-<日期>.zip（里面已经放好「首次运行请先看这里.txt」）
 #
 # 为什么要打包：直接把 Pet.exe 传到微信 / QQ 会被拦（不收 exe），
@@ -14,6 +16,7 @@
 # ============================================================================
 param(
     [string]$OutDir = 'dist',
+    [string]$Char = '',      # 指定角色目录名（如 -Char 小维）；留空 = pet-config.txt 里的当前角色
     [switch]$AllChars
 )
 $ErrorActionPreference = 'Stop'
@@ -27,10 +30,14 @@ $must = @('Pet.exe', 'PetSettings.exe', 'pet-config.txt', 'pet-overrides.txt', '
 foreach ($f in $must) { if (-not (Test-Path (Join-Path $here $f))) { Fail "缺少 $f，先编译并复制到根目录" } }
 
 # ---------- 2. 当前角色 ----------
-$charRel = 'chars\小维'
-if (Test-Path (Join-Path $here 'pet-config.txt')) {
-    foreach ($raw in Get-Content (Join-Path $here 'pet-config.txt') -Encoding utf8) {
-        if ($raw -like 'charDir=*') { $charRel = $raw.Substring('charDir='.Length).Trim(); break }
+if ($Char) {
+    $charRel = 'chars\' + $Char
+} else {
+    $charRel = 'chars\小维'
+    if (Test-Path (Join-Path $here 'pet-config.txt')) {
+        foreach ($raw in Get-Content (Join-Path $here 'pet-config.txt') -Encoding utf8) {
+            if ($raw -like 'charDir=*') { $charRel = $raw.Substring('charDir='.Length).Trim(); break }
+        }
     }
 }
 $charRel = $charRel -replace '/', '\'

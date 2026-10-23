@@ -3,6 +3,7 @@
 #
 # 用法：powershell -ExecutionPolicy Bypass -File pack-source-for-friend.ps1
 #       powershell -ExecutionPolicy Bypass -File pack-source-for-friend.ps1 -AllChars
+#       powershell -ExecutionPolicy Bypass -File pack-source-for-friend.ps1 -Char 小维
 # 产物：dist\QPet-源码-<日期>.zip
 #
 # 为什么有时要发源码：在他自己电脑上编译出来的 exe 是「本机新文件」，
@@ -11,6 +12,7 @@
 # ============================================================================
 param(
     [string]$OutDir = 'dist',
+    [string]$Char = '',      # 指定角色目录名（如 -Char 小维）；留空 = pet-config.txt 里的当前角色
     [switch]$AllChars
 )
 $ErrorActionPreference = 'Stop'
@@ -21,14 +23,18 @@ function Fail($msg) { Write-Host "✗ $msg" -ForegroundColor Red; exit 1 }
 
 # ---------- 1. 源码文件检查 ----------
 $src = @('pet.cs', 'Program.cs', 'Settings.cs', 'Pet.csproj', 'PetSettings.csproj', 'build.cmd',
-         'pet.ico', 'pet.png', 'LICENSE', 'README.md', 'make-pet-config.ps1',
+         'pet.ico', 'pet.png', 'LICENSE', 'NOTICE.md', 'README.md', 'make-pet-config.ps1',
          'pet-config.txt', 'pet-overrides.txt')
 foreach ($f in $src) { if (-not (Test-Path (Join-Path $here $f))) { Fail "缺少 $f" } }
 
 # ---------- 2. 当前角色 ----------
-$charRel = 'chars\小维'
-foreach ($raw in Get-Content (Join-Path $here 'pet-config.txt') -Encoding utf8) {
-    if ($raw -like 'charDir=*') { $charRel = $raw.Substring('charDir='.Length).Trim(); break }
+if ($Char) {
+    $charRel = 'chars\' + $Char
+} else {
+    $charRel = 'chars\小维'
+    foreach ($raw in Get-Content (Join-Path $here 'pet-config.txt') -Encoding utf8) {
+        if ($raw -like 'charDir=*') { $charRel = $raw.Substring('charDir='.Length).Trim(); break }
+    }
 }
 $charRel = $charRel -replace '/', '\'
 $charFull = Join-Path $here $charRel
