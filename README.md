@@ -33,9 +33,10 @@ Q Pet 是一款桌面宠物：透明置顶、点击穿透、四类动画、语�
 
 内置芙宁娜、阿米娅、小维、奶蛙四套角色包，附带预编译程序，解压即可运行。
 
-> **网页版**：本项目同时提供 [Q Pet · Web](web/)——用原生 JavaScript + Canvas + Web Audio
-> 重写的网页移植版，打开链接就能玩，无需安装。
-> 资源体积从桌面端的 139 MB 压到 **5.2 MB**（WebP + MP3）。
+> **网页版**：不想装东西？直接在浏览器里玩 —— **<https://xiezaji.github.io/q-pet/>**
+>
+> 它是用原生 JavaScript + Canvas + Web Audio 重写的移植版（源码在 [web/](web/)），
+> 资源体积从桌面端的 139 MB 压到 **5.2 MB**（WebP + MP3），手机也能打开。
 > 详见 [`web/README.md`](web/README.md)。
 
 <div align="center">
@@ -269,6 +270,7 @@ q-pet/
 ├─ run-pet-settings.cmd       打开设置
 ├─ pet-config.txt             运行配置（相对路径）
 ├─ pet-overrides.txt          设置面板覆盖项
+├─ LICENSE / NOTICE.md        MIT 许可证（代码）与素材声明
 └─ pet.ico / pet.png          图标
 ```
 </details>
@@ -283,4 +285,4 @@ q-pet/
 
 内置角色的立绘、语音等素材版权归原权利方所有，仅供个人学习与自用，请勿用于商业用途或二次分发。
 
-代码部分以 [MIT 许可证](LICENSE) 授权；上述角色素材不包含在 MIT 授权范围内。
+代码部分以 [MIT 许可证](LICENSE) 授权；上述角色素材不包含在 MIT 授权范围内，详见 [NOTICE.md](NOTICE.md)。
